@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     // Метод создания заказа
-    public function createOrder()
+    public function createOrder(Request $request)
     {
         $newOrder = new Order;
-        $request->cost = rand(100, 1000));
+        $request->cost = rand(100, 1000);
         $validated = $request->validate(
             [
                 'description' => 'required',
@@ -41,7 +41,7 @@ class OrderController extends Controller
         return $orders;
     }
 
-    // Метод списка курьеров  
+    // Метод списка курьеров
     public function getAllCouriers()
     {
         $couriers = DB::table('couriers')->select('name', 'phone_number')->get();
@@ -58,7 +58,7 @@ class OrderController extends Controller
     public function assigningOrderToCourier(Request $request, $id)
     {
         $freeCourier = Courier::where('status', 'Свободен')->get();
-        
+
         // Чтобы курьеры могли получить заказы поочередно
         $queue = [];
         if($freeCourier==0){
@@ -74,7 +74,7 @@ class OrderController extends Controller
                 }
             }
         } else {
-            $queue = $courier;
+            $queue = $freeCourier;
         }
         $queue->status = 'Занят';
         $queue->save();
@@ -94,7 +94,7 @@ class OrderController extends Controller
     }
 
     // Метод истории выполненных заказов курьером
-    public function completedOrdersByCourier(Request $request, $id)
+    public function completedOrders(Request $request, $id)
     {
         $completedOrders = Order::where('courier_id', $id)->get();
     }

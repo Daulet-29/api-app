@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/create-order', [OrderController::class, 'createOrder']);
-Route::post('/get-order-information', [OrderController::class, 'getOrderInformation']);
-Route::get('/get-all-orders', [OrderController::class, 'getAllOrders']);
-Route::get('/get-all-couriers', [OrderController::class, 'getAllCouriers']);
-Route::get('/get-free-couriers', [OrderController::class, 'getFreeCouriers']);
-Route::put('/assigning-order-to-courier', [OrderController::class, 'assigningOrderToCourier']);
-Route::put('/change-status', [OrderController::class, 'changeStatus']);
-Route::post('/completed-orders-by-courier', [OrderController::class, 'completedOrdersByCourier']);
+Route::post('api/order', [OrderController::class, 'createOrder']);
+Route::get('api/order/{id}', [OrderController::class, 'getOrderInformation']);
+Route::get('api/order', [OrderController::class, 'getAllOrders']);
+Route::get('api/get-couriers', [OrderController::class, 'getAllCouriers']);
+Route::get('api/courier?free=1', [OrderController::class, 'getFreeCouriers']);
+Route::put('api/courier/{id}', [OrderController::class, 'assigningOrderToCourier']);
+Route::put('api/order/{id}', [OrderController::class, 'changeStatus']);
+Route::get('api/courier/{id}/orders', [OrderController::class, 'completedOrders']);
